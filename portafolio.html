@@ -103,9 +103,56 @@
             transform: translate(-50%, -50%);
             transition: width 0.4s ease, height 0.4s ease, background 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
             mix-blend-mode: difference;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #fff;
         }
         .cursor.hover { width: 130px; height: 130px; background: rgba(255,255,255,0.05); }
+        .cursor .cursor-text { opacity: 0; transition: opacity 0.3s ease; }
+        .cursor.hover .cursor-text { opacity: 1; }
 
+        .grain {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.035;
+            mix-blend-mode: multiply;
+        }
+        .grain::after {
+            content: '';
+            position: absolute;
+            inset: -50%;
+            width: 200%;
+            height: 200%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            animation: grain 8s steps(10) infinite;
+        }
+        @keyframes grain {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-5%, -5%); }
+            20% { transform: translate(-10%, 5%); }
+            30% { transform: translate(5%, -10%); }
+            40% { transform: translate(-5%, 15%); }
+            50% { transform: translate(-10%, 5%); }
+            60% { transform: translate(15%, 0); }
+            70% { transform: translate(0, 10%); }
+            80% { transform: translate(-15%, 0); }
+            90% { transform: translate(10%, 5%); }
+        }
+
+        .dud { color: rgba(0,0,0,0.25); }
+
+        @keyframes navbar-in {
+            from { opacity: 0; transform: translateY(-60px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         .navbar {
             position: fixed;
             top: 0; left: 0; right: 0;
@@ -116,7 +163,8 @@
             gap: var(--space-14, 56px);
             padding: var(--space-5) var(--space-12);
             background: #ffffff;
-            transition: transform 0.4s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            animation: navbar-in 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both;
+            transition: transform 0.4s var(--ease-out), border-color 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
             border-bottom: 1px solid transparent;
         }
         .navbar.hidden { transform: translateY(-100%); }
@@ -508,7 +556,7 @@
             position: relative;
             overflow: hidden;
         }
-        .about-content { position: relative; z-index: 2; }
+        .about-content { position: relative; z-index: 3; }
         .about-text {
             font-family: var(--font-body);
             font-size: 1rem;
@@ -539,18 +587,27 @@
             letter-spacing: 0.05em;
         }
 
-        .about-bg-pattern {
+        .about-video {
             position: absolute;
             inset: 0;
-            opacity: 0.05;
-            background-image:
-                radial-gradient(circle at 25% 35%, rgba(255,255,255,0.4) 0%, transparent 50%),
-                radial-gradient(circle at 75% 65%, rgba(255,255,255,0.2) 0%, transparent 40%);
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .about-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.65);
+            z-index: 1;
             pointer-events: none;
         }
 
         .playground-carousel {
-            overflow: hidden;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: none;
             width: 100vw;
             margin-left: calc(-50vw + 50%);
             margin-bottom: var(--space-8);
@@ -558,19 +615,14 @@
             -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 5%, #000 95%, transparent 100%);
             cursor: grab;
         }
+        .playground-carousel::-webkit-scrollbar { display: none; }
         .playground-carousel:active { cursor: grabbing; }
         .playground-track {
             display: flex;
             gap: var(--space-8);
             width: max-content;
-            animation: scroll 50s linear infinite;
-            will-change: transform;
         }
-        .playground-track.dragging { animation-play-state: paused !important; cursor: grabbing; }
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
+        .playground-track.dragging { cursor: grabbing; }
         .playground-card {
             flex: 0 0 560px;
             border-radius: var(--radius-lg);
@@ -646,7 +698,7 @@
             letter-spacing: 0.04em;
             line-height: 1;
             display: inline-block;
-            transition: opacity 0.3s;
+            transition: opacity 0.3s var(--ease-out);
             color: var(--dark-text);
         }
         .contact-email:hover { opacity: 0.35; }
@@ -670,7 +722,7 @@
             letter-spacing: 0.2em;
             text-transform: uppercase;
             font-weight: 500;
-            transition: opacity 0.3s;
+            transition: opacity 0.3s var(--ease-out);
             color: var(--dark-text);
         }
         .contact-socials a:hover { opacity: 0.35; }
@@ -702,23 +754,11 @@
         }
         .reveal.visible { opacity: 1; transform: translateY(0); }
 
-        .reveal-scale {
-            opacity: 0;
-            transform: scale(0.96);
-            transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
-        }
-        .reveal-scale.visible { opacity: 1; transform: scale(1); }
-
         .stagger-children > * {
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
         }
-        .stagger-children.visible > *:nth-child(1) { transition-delay: 0ms; }
-        .stagger-children.visible > *:nth-child(2) { transition-delay: 80ms; }
-        .stagger-children.visible > *:nth-child(3) { transition-delay: 160ms; }
-        .stagger-children.visible > *:nth-child(4) { transition-delay: 240ms; }
-        .stagger-children.visible > *:nth-child(5) { transition-delay: 320ms; }
         .stagger-children.visible > * { opacity: 1; transform: translateY(0); }
 
         @media (max-width: 1024px) {
@@ -790,7 +830,6 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .playground-track { animation: none; }
             html { scroll-behavior: auto; }
             *, *::before, *::after {
                 animation-duration: 0.01ms !important;
@@ -798,7 +837,6 @@
                 transition-duration: 0.01ms !important;
             }
             .reveal { opacity: 1; transform: none; }
-            .reveal-scale { opacity: 1; transform: none; }
             .stagger-children > * { opacity: 1; transform: none; }
         }
 
@@ -806,7 +844,6 @@
             .navbar { position: static; border: none; }
             .hero { min-height: auto; }
             .playground-carousel { mask-image: none; -webkit-mask-image: none; }
-            .playground-track { animation: none; }
             .contact-section { border-top: 1px solid #000; }
             .about-section { border-radius: 0; }
         }
@@ -814,12 +851,13 @@
 </head>
 <body>
 
-    <div class="cursor" id="cursor"></div>
+    <div class="cursor" id="cursor"><span class="cursor-text">OPEN</span></div>
+    <div class="grain" aria-hidden="true"></div>
 
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <nav class="navbar" role="navigation" aria-label="Main navigation">
-        <a href="#" class="logo" aria-label="Home">Sy</a>
+        <a href="#" class="logo" aria-label="Home" id="logo">S¥</a>
         <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
             <span></span>
             <span></span>
@@ -827,20 +865,17 @@
         </button>
         <ul class="nav-links" role="menubar">
             <li role="none"><a href="#home" role="menuitem" aria-current="page">Home</a></li>
-            <li role="none"><a href="#about" role="menuitem">About</a></li>
-            <li role="none"><a href="#services" role="menuitem">Services</a></li>
             <li role="none"><a href="#projects" role="menuitem">Projects</a></li>
-            <li role="none" class="nav-cta"><a href="#contact" class="btn btn-primary" role="menuitem">Let's connect</a></li>
+            <li role="none"><a href="#services" role="menuitem">Services</a></li>
+            <li role="none"><a href="#about" role="menuitem">About</a></li>
+            <li role="none"><a href="#playground" role="menuitem">Playground</a></li>
+            <li role="none" class="nav-cta"><a href="#contact" class="btn btn-primary" role="menuitem">Contact</a></li>
         </ul>
     </nav>
 
     <section class="hero" id="home" aria-label="Introduction">
-        <div class="hero-line">
-            <span>S</span><span>E</span><span>B</span><span>A</span><span>S</span><span>T</span><span>I</span><span>A</span><span>N</span>
-        </div>
-        <div class="hero-line">
-            <span>Y</span><span>E</span><span>P</span><span>E</span><span>S</span>
-        </div>
+        <div class="hero-line">SEBASTIAN</div>
+        <div class="hero-line">YEPES</div>
         <div class="hero-line-sub">FULL STACK</div>
         <div class="hero-line-sub">ENGINEER</div>
         <div class="hero-bottom">
@@ -852,8 +887,8 @@
     <section class="section" id="projects" aria-labelledby="projects-title">
         <div class="section-header">
             <div class="section-header-left">
-                <span class="section-label">Full Stack Specialist</span>
-                <h2 class="section-title" id="projects-title">Portfolio</h2>
+                <span class="section-label" data-scramble>Full Stack Specialist</span>
+                <h2 class="section-title" id="projects-title" data-scramble>Portfolio</h2>
             </div>
             <div class="section-line" aria-hidden="true"></div>
         </div>
@@ -868,10 +903,10 @@
                         <svg class="project-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
                     </div>
                     <div class="project-tags">
-                        <span class="tag dark">Tienda Virtual</span>
-                        <span class="tag dark">React + Next.js</span>
-                        <span class="tag dark">Tailwind CSS</span>
-                        <span class="tag dark">Payment Integration</span>
+                        <span class="tag dark">REACT™</span>
+                        <span class="tag dark">NEXT//</span>
+                        <span class="tag dark">TAILWIND//</span>
+                        <span class="tag dark">STRIPE//</span>
                     </div>
                     <p class="project-desc">A modern e-commerce platform that increased online sales conversion by 45% through optimized UX and mobile-first design. Built with Next.js, integrated Stripe payments, and reduced load time to under 1.2s.</p>
                 </div>
@@ -887,10 +922,10 @@
                         <svg class="project-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
                     </div>
                     <div class="project-tags">
-                        <span class="tag">Chatbot & Automation</span>
-                        <span class="tag">Node.js</span>
-                        <span class="tag">NestJS</span>
-                        <span class="tag">WhatsApp API</span>
+                        <span class="tag">NODE_01</span>
+                        <span class="tag">NEST//</span>
+                        <span class="tag">API_WHATSAPP</span>
+                        <span class="tag">BOT//CORE</span>
                     </div>
                     <p class="project-desc">A 24/7 automated booking and customer service system that eliminated missed appointments. Handles 500+ monthly interactions, increased client retention by 35%, and reduced manual workload by 80%.</p>
                 </div>
@@ -906,10 +941,10 @@
                         <svg class="project-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
                     </div>
                     <div class="project-tags">
-                        <span class="tag">Web Design</span>
-                        <span class="tag">React</span>
-                        <span class="tag">Tailwind CSS</span>
-                        <span class="tag">CMS Integration</span>
+                        <span class="tag">REACT™</span>
+                        <span class="tag">TAILWIND//</span>
+                        <span class="tag">CMS/X</span>
+                        <span class="tag">UI_LEGAL</span>
                     </div>
                     <p class="project-desc">Professional website designed to capture legal leads and streamline client consultations. Integrated automated scheduling system, resulting in 3x increase in qualified inquiries within first 2 months.</p>
                 </div>
@@ -922,8 +957,8 @@
             <div class="services-left">
                 <div class="section-header" style="margin-bottom: var(--space-5); flex-direction: column; align-items: flex-start; gap: var(--space-2);">
                     <div>
-                        <span class="section-label">What I do</span>
-                        <h2 class="section-title" id="services-title">Services</h2>
+                        <span class="section-label" data-scramble>What I do</span>
+                        <h2 class="section-title" id="services-title" data-scramble>Services</h2>
                     </div>
                     <div class="section-line" aria-hidden="true"></div>
                 </div>
@@ -975,10 +1010,13 @@
     </section>
 
     <section class="about-section" id="about" aria-labelledby="about-title">
-        <div class="about-bg-pattern" aria-hidden="true"></div>
+        <video class="about-video" aria-hidden="true" autoplay muted loop playsinline>
+            <source src="Watch Dogs 2 - ctOS Introduction Scene.mp4" type="video/mp4">
+        </video>
+        <div class="about-overlay" aria-hidden="true"></div>
         <div class="about-content">
             <span class="section-label" style="color: rgba(255,255,255,0.4); margin-bottom: var(--space-2); display: block;">About</span>
-            <h2 class="section-title" id="about-title" style="color: var(--dark-text); margin-bottom: var(--space-6);">Hi, I'm Sebastián</h2>
+            <h2 class="section-title" id="about-title" style="color: var(--dark-text); margin-bottom: var(--space-6);" data-scramble>Hi, I'm Sebastián</h2>
             <p class="about-text">Full Stack Developer specializing in JavaScript end-to-end, with 2+ years building enterprise applications at Quipux. I deliver production-ready solutions that don't just work — they drive measurable business results.</p>
             <p class="about-text">At Quipux, I optimized database performance by 75%, built scalable APIs serving 10,000+ daily active users, and shipped features with 95% test coverage. Now I'm building custom web solutions for businesses across Medellín.</p>
             <p class="about-text">I work with startups and established companies. I handle everything from architecture and backend optimization to responsive frontend design. I ship fast. I ship clean code. I ship results.</p>
@@ -1005,8 +1043,8 @@
     <section class="section" id="playground" aria-labelledby="playground-title">
         <div class="section-header">
             <div class="section-header-left">
-                <span class="section-label">Experiments</span>
-                <h2 class="section-title" id="playground-title">Playground</h2>
+                <span class="section-label" data-scramble>Experiments</span>
+                <h2 class="section-title" id="playground-title" data-scramble>Playground</h2>
                 <p class="section-subtitle">Side projects and technical explorations</p>
             </div>
             <div class="section-line" aria-hidden="true"></div>
@@ -1077,7 +1115,7 @@
     </section>
 
     <section class="contact-section" id="contact">
-        <span class="contact-label">Contact</span>
+            <span class="contact-label" data-scramble>Contact</span>
         <div class="contact-grid">
             <div class="contact-info">
                 <a href="mailto:sebayepa219@gmail.com" class="contact-email">sebayepa219@gmail.com</a>
@@ -1096,7 +1134,6 @@
         </div>
     </section>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script>
         const cursor = document.getElementById('cursor');
         let mx = 0, my = 0, cx = 0, cy = 0;
@@ -1119,19 +1156,6 @@
 
         document.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; });
         document.addEventListener('mouseenter', () => { cursor.style.opacity = '1'; });
-
-        gsap.from('.hero-line > span', {
-            y: 140, opacity: 0, duration: 1.2, stagger: 0.025, ease: 'power4.out', delay: 0.3
-        });
-        gsap.from('.hero-line-sub', {
-            y: 100, opacity: 0, duration: 1, stagger: 0.1, ease: 'power4.out', delay: 0.7
-        });
-        gsap.from('.hero-bottom > span', {
-            y: 40, opacity: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out', delay: 1.1
-        });
-        gsap.from('.navbar', {
-            y: -60, opacity: 0, duration: 0.8, ease: 'power3.out', delay: 0.1
-        });
 
         const hamburger = document.querySelector('.hamburger');
         const navLinks = document.querySelector('.nav-links');
@@ -1196,6 +1220,11 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
+                    if (entry.target.classList.contains('stagger-children')) {
+                        entry.target.querySelectorAll(':scope > *').forEach((child, i) => {
+                            child.style.transitionDelay = (i * 80) + 'ms';
+                        });
+                    }
                 }
             });
         }, {
@@ -1226,7 +1255,7 @@
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
                     e.preventDefault();
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    target.scrollIntoView({ block: 'start' });
                 }
             });
         });
@@ -1236,14 +1265,45 @@
         let isDragging = false;
         let startX = 0;
         let scrollLeft = 0;
+        let autoScrollId = null;
+
+        function startAutoScroll() {
+            if (autoScrollId || !carousel) return;
+            const totalDistance = (track.scrollWidth - carousel.clientWidth) / 2;
+            const speed = totalDistance / 50000;
+            let lastTime = performance.now();
+            function step(now) {
+                const delta = now - lastTime;
+                lastTime = now;
+                carousel.scrollLeft += speed * delta;
+                if (carousel.scrollLeft >= track.scrollWidth / 2) {
+                    carousel.scrollLeft = 0;
+                }
+                if (!isDragging) {
+                    autoScrollId = requestAnimationFrame(step);
+                }
+            }
+            autoScrollId = requestAnimationFrame(step);
+        }
+
+        function stopAutoScroll() {
+            if (autoScrollId) {
+                cancelAnimationFrame(autoScrollId);
+                autoScrollId = null;
+            }
+        }
 
         if (carousel && track) {
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (!prefersReducedMotion) { startAutoScroll(); }
+
             carousel.addEventListener('mousedown', (e) => {
                 isDragging = true;
                 startX = e.pageX - carousel.offsetLeft;
-                scrollLeft = carousel.scrollLeft || 0;
+                scrollLeft = carousel.scrollLeft;
                 track.classList.add('dragging');
                 carousel.style.cursor = 'grabbing';
+                stopAutoScroll();
             });
 
             carousel.addEventListener('mouseleave', () => {
@@ -1251,6 +1311,7 @@
                     isDragging = false;
                     track.classList.remove('dragging');
                     carousel.style.cursor = 'grab';
+                    startAutoScroll();
                 }
             });
 
@@ -1258,6 +1319,7 @@
                 isDragging = false;
                 track.classList.remove('dragging');
                 carousel.style.cursor = 'grab';
+                startAutoScroll();
             });
 
             carousel.addEventListener('mousemove', (e) => {
@@ -1265,7 +1327,30 @@
                 e.preventDefault();
                 const x = e.pageX - carousel.offsetLeft;
                 const walk = (x - startX) * 1.5;
+                carousel.scrollLeft = scrollLeft - walk;
             });
+
+            carousel.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                startX = e.touches[0].pageX - carousel.offsetLeft;
+                scrollLeft = carousel.scrollLeft;
+                stopAutoScroll();
+            }, { passive: true });
+
+            carousel.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                const x = e.touches[0].pageX - carousel.offsetLeft;
+                const walk = (x - startX) * 1.5;
+                carousel.scrollLeft = scrollLeft - walk;
+            }, { passive: true });
+
+            carousel.addEventListener('touchend', () => {
+                isDragging = false;
+                track.classList.remove('dragging');
+                startAutoScroll();
+            });
+
+            startAutoScroll();
         }
 
         document.addEventListener('keydown', (e) => {
@@ -1276,6 +1361,179 @@
                 document.body.style.overflow = '';
             }
         });
+
+        /* ===================== TEXT SCRAMBLE ===================== */
+        class Scramble {
+            constructor(el, opts = {}) {
+                this.el = el;
+                this.original = opts.original || el.textContent.trim();
+                this.chars = opts.chars || '!<>-_\\/[]{}—=+*^?@ABCXYZ';
+                this.speed = opts.speed || 30;
+            }
+
+            start() {
+                const text = this.original;
+                const length = text.length;
+                let frame = 0;
+                const totalFrames = Math.floor(Math.random() * 20) + 25;
+
+                return new Promise(resolve => {
+                    const tick = () => {
+                        let output = '';
+                        let done = 0;
+                        for (let i = 0; i < length; i++) {
+                            if (frame >= totalFrames) {
+                                output += text[i];
+                                done++;
+                            } else if (frame > Math.floor(totalFrames * (i / length))) {
+                                output += text[i];
+                                done++;
+                            } else {
+                                output += `<span class="dud">${this.chars[Math.floor(Math.random() * this.chars.length)]}</span>`;
+                            }
+                        }
+                        this.el.innerHTML = output;
+                        frame++;
+                        if (done === length) { resolve(); }
+                        else { setTimeout(tick, this.speed); }
+                    };
+                    tick();
+                });
+            }
+
+            reset() {
+                this.el.textContent = this.original;
+            }
+        }
+
+        /* hero bottom-to-top scramble */
+        const heroLines = [
+            ...document.querySelectorAll('.hero-line'),
+            ...document.querySelectorAll('.hero-line-sub'),
+            ...document.querySelectorAll('.hero-bottom span')
+        ].reverse();
+
+        const heroScrambles = heroLines.map(el => {
+            const s = new Scramble(el);
+            el.innerHTML = '';
+            for (let i = 0; i < s.original.length; i++) {
+                el.innerHTML += `<span class="dud">${s.chars[Math.floor(Math.random() * s.chars.length)]}</span>`;
+            }
+            return s;
+        });
+
+        heroScrambles.forEach((s, i) => {
+            setTimeout(() => s.start(), 400 + i * 120);
+        });
+
+        const scrambles = [];
+
+        document.querySelectorAll('[data-scramble]').forEach(el => {
+            const s = new Scramble(el);
+            scrambles.push(s);
+            el.innerHTML = '';
+            for (let i = 0; i < s.original.length; i++) {
+                el.innerHTML += `<span class="dud">${s.chars[Math.floor(Math.random() * s.chars.length)]}</span>`;
+            }
+        });
+
+        const scrambleObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const idx = Array.from(document.querySelectorAll('[data-scramble]')).indexOf(entry.target);
+                    if (idx >= 0 && scrambles[idx]) {
+                        scrambles[idx].start();
+                        scrambleObserver.unobserve(entry.target);
+                    }
+                }
+            });
+        }, { threshold: 0.3 });
+
+        document.querySelectorAll('[data-scramble]').forEach(el => scrambleObserver.observe(el));
+
+        /* logo scramble on load */
+        setTimeout(() => {
+            const logoEl = document.getElementById('logo');
+            if (logoEl) {
+                const s = new Scramble(logoEl);
+                s.start();
+            }
+        }, 1500);
+
+        /* nav hover scramble (reusa instancia) */
+        document.querySelectorAll('.nav-links a').forEach(a => {
+            const orig = a.textContent;
+            let scrambleInstance = null;
+            let scrambling = false;
+            a.addEventListener('mouseenter', () => {
+                if (scrambling) return;
+                scrambling = true;
+                if (!scrambleInstance) {
+                    scrambleInstance = new Scramble(a, { original: orig, speed: 20 });
+                }
+                scrambleInstance.start().then(() => { scrambling = false; });
+            });
+            a.addEventListener('mouseleave', () => {
+                scrambling = false;
+                a.textContent = orig;
+            });
+        });
+
+        /* stat counter (sufijo solo al final) */
+        document.querySelectorAll('.stat-number').forEach(el => {
+            const obs = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        obs.unobserve(entry.target);
+                        const text = el.textContent;
+                        const match = text.match(/^([\d,.]+)([kK+%]?)/);
+                        if (match) {
+                            let target = parseFloat(match[1].replace(/,/g, ''));
+                            const suffix = match[2] || '';
+                            if (suffix.toLowerCase() === 'k') target *= 1000;
+                            const duration = 1200;
+                            const start = Math.max(1, Math.floor(target * 0.3));
+                            const startTime = performance.now();
+                            function update(now) {
+                                const p = Math.min((now - startTime) / duration, 1);
+                                const eased = 1 - Math.pow(1 - p, 3);
+                                const current = Math.floor(start + (target - start) * eased);
+                                const showSuffix = p >= 1 ? suffix : '';
+                                el.textContent = current.toLocaleString() + showSuffix;
+                                if (p < 1) requestAnimationFrame(update);
+                            }
+                            el.textContent = Math.floor(start).toString();
+                            requestAnimationFrame(update);
+                        }
+                    }
+                });
+            }, { threshold: 0.5 });
+            obs.observe(el);
+        });
+
+        /* periodic random glitch on small texts */
+        function randomGlitch() {
+            const targets = [
+                ...document.querySelectorAll('.hero-bottom span, .contact-phone, .contact-bottom, .stat-label, .section-subtitle, .tag, .project-desc, .about-text, .service-desc, .project-title, .service-name, .work-meta, .footer-bottom span, .playground-card-title, .playground-card-desc, .lab-item h3, .lab-item p')
+            ].filter(el => {
+                const t = el.textContent.trim();
+                return t.length > 0 && t.length < 80 && !el.querySelector('.dud');
+            });
+
+            if (targets.length === 0) { setTimeout(randomGlitch, 500); return; }
+
+            const el = targets[Math.floor(Math.random() * targets.length)];
+            const orig = el.textContent.trim();
+            const s = new Scramble(el, { original: orig, speed: 50 + Math.floor(Math.random() * 20) });
+            s.start().then(() => {
+                if (el.textContent !== orig) el.textContent = orig;
+            });
+
+            const nextDelay = 1500 + Math.floor(Math.random() * 4000);
+            setTimeout(randomGlitch, nextDelay);
+        }
+
+        setTimeout(randomGlitch, 1000);
     </script>
 
 </body>
