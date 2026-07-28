@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sebastián Yepes — Full Stack Developer</title>
     <meta property="og:title" content="Sebastián Yepes — Full Stack Developer">
+    <meta name="description" content="Portfolio of Sebastián Yepes — full stack developer based in Medellín. React, Next.js, Node.js, and modern web solutions.">
     <meta property="og:description" content="Portfolio of Sebastián Yepes — full stack developer based in Medellín.">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9C%A6%3C/text%3E%3C/svg%3E">
     <style>
         :root {
             --font-display: 'Bebas Neue', sans-serif;
@@ -101,7 +103,7 @@
             pointer-events: none;
             z-index: 9999;
             transform: translate(-50%, -50%);
-            transition: width 0.4s ease, height 0.4s ease, background 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
+            transition: width 0.4s var(--ease-out), height 0.4s var(--ease-out), background 0.3s var(--ease-out), border-color 0.3s var(--ease-out), opacity 0.3s var(--ease-out);
             mix-blend-mode: difference;
             display: flex;
             align-items: center;
@@ -113,7 +115,7 @@
             color: #fff;
         }
         .cursor.hover { width: 130px; height: 130px; background: rgba(255,255,255,0.05); }
-        .cursor .cursor-text { opacity: 0; transition: opacity 0.3s ease; }
+        .cursor .cursor-text { opacity: 0; transition: opacity 0.3s var(--ease-out); }
         .cursor.hover .cursor-text { opacity: 1; }
 
         .grain {
@@ -167,7 +169,7 @@
             transition: transform 0.4s var(--ease-out), border-color 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
             border-bottom: 1px solid transparent;
         }
-        .navbar.hidden { transform: translateY(-100%); }
+        .navbar.hidden { transform: translateY(-100%) !important; }
         .navbar.scrolled { border-bottom-color: var(--border); box-shadow: var(--shadow-sm); }
 
         .logo {
@@ -212,6 +214,18 @@
         .nav-links a[aria-current="page"] { color: var(--text); }
         .nav-links a[aria-current="page"]::after { width: 100%; }
 
+        .nav-cta .btn {
+            background: #000;
+            color: #fff;
+            min-width: 130px;
+        }
+        .nav-cta .btn:hover {
+            background: #000;
+            color: #fff;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+        .btn-arrow { width: 12px; height: 12px; transition: transform 0.3s var(--ease-out); }
+        .nav-cta .btn:hover .btn-arrow { transform: translateX(4px); }
         .nav-cta { margin-left: var(--space-4); }
 
         .btn {
@@ -600,7 +614,7 @@
             position: absolute;
             inset: 0;
             background: rgba(0,0,0,0.65);
-            z-index: 1;
+            z-index: 2;
             pointer-events: none;
         }
 
@@ -742,11 +756,6 @@
             opacity: 0.3;
         }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(24px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         .reveal {
             opacity: 0;
             transform: translateY(24px);
@@ -863,18 +872,19 @@
             <span></span>
             <span></span>
         </button>
-        <ul class="nav-links" role="menubar">
-            <li role="none"><a href="#home" role="menuitem" aria-current="page">Home</a></li>
-            <li role="none"><a href="#projects" role="menuitem">Projects</a></li>
-            <li role="none"><a href="#services" role="menuitem">Services</a></li>
-            <li role="none"><a href="#about" role="menuitem">About</a></li>
-            <li role="none"><a href="#playground" role="menuitem">Playground</a></li>
-            <li role="none" class="nav-cta"><a href="#contact" class="btn btn-primary" role="menuitem">Contact</a></li>
+        <ul class="nav-links">
+            <li><a href="#home" aria-current="page">Home</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#playground">Playground</a></li>
+            <li class="nav-cta"><a href="#contact" class="btn btn-primary">Contact <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="1" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg></a></li>
         </ul>
     </nav>
 
+    <main id="main-content">
     <section class="hero" id="home" aria-label="Introduction">
-        <div class="hero-line">SEBASTIAN</div>
+        <h1 class="hero-line">SEBASTIAN</h1>
         <div class="hero-line">YEPES</div>
         <div class="hero-line-sub">FULL STACK</div>
         <div class="hero-line-sub">ENGINEER</div>
@@ -962,8 +972,8 @@
                     </div>
                     <div class="section-line" aria-hidden="true"></div>
                 </div>
-                <p>I build full-stack applications that solve real business problems. React, Next.js, and Node.js for speed. MongoDB or PostgreSQL for data. Docker for deployment.</p>
-                <a href="#contact" class="btn btn-primary">Let's connect</a>
+                <p>From concept to deployment — I design and develop full-stack solutions tailored to your business needs. Every project is built with performance, scalability, and clean code in mind.</p>
+                <a href="#contact" class="btn btn-primary">Let's talk</a>
             </div>
             <div class="services-right">
                 <div class="service-block">
@@ -1010,8 +1020,9 @@
     </section>
 
     <section class="about-section" id="about" aria-labelledby="about-title">
-        <video class="about-video" aria-hidden="true" autoplay muted loop playsinline>
+        <video class="about-video" aria-hidden="true" autoplay muted loop playsinline preload="none" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect fill='%230a0a0a' width='1' height='1'/%3E%3C/svg%3E">
             <source src="Watch Dogs 2 - ctOS Introduction Scene.mp4" type="video/mp4">
+            <span>Background visual element</span>
         </video>
         <div class="about-overlay" aria-hidden="true"></div>
         <div class="about-content">
@@ -1051,62 +1062,62 @@
         </div>
         <div class="playground-carousel" role="region" aria-label="Experimental projects carousel" tabindex="0">
             <div class="playground-track">
-                <div class="playground-card">
+                <a href="#" class="playground-card">
                     <img src="https://www.concertarchives.org/image_uploads/photo/image/1682087/large_image.jpg" alt="Performance Dashboard project" loading="lazy">
                     <div class="playground-card-content">
                         <div class="playground-card-title">Performance Dashboard</div>
                         <div class="playground-card-desc">Real-time analytics UI with D3.js and React</div>
                     </div>
-                </div>
-                <div class="playground-card">
+                </a>
+                <a href="#" class="playground-card">
                     <img src="https://www.concertarchives.org/image_uploads/photo/image/1676419/large_image.jpg" alt="Task Management System project" loading="lazy">
                     <div class="playground-card-content">
                         <div class="playground-card-title">Task Management System</div>
                         <div class="playground-card-desc">Full-stack todo app with real-time updates</div>
                     </div>
-                </div>
-                <div class="playground-card">
+                </a>
+                <a href="#" class="playground-card">
                     <img src="https://www.concertarchives.org/image_uploads/photo/image/1676418/large_image.jpg" alt="API Testing Toolkit project" loading="lazy">
                     <div class="playground-card-content">
                         <div class="playground-card-title">API Testing Toolkit</div>
                         <div class="playground-card-desc">REST API testing and documentation tool</div>
                     </div>
-                </div>
-                <div class="playground-card">
+                </a>
+                <a href="#" class="playground-card">
                     <img src="https://www.concertarchives.org/image_uploads/photo/image/1676417/large_image.jpg" alt="SaaS Landing Page project" loading="lazy">
                     <div class="playground-card-content">
                         <div class="playground-card-title">SaaS Landing Page</div>
                         <div class="playground-card-desc">Modern startup landing page built in React</div>
                     </div>
-                </div>
-                <div class="playground-card">
+                </a>
+                <a href="#" class="playground-card">
                     <img src="https://www.concertarchives.org/image_uploads/photo/image/1682087/large_image.jpg" alt="Performance Dashboard project" loading="lazy">
                     <div class="playground-card-content">
                         <div class="playground-card-title">Performance Dashboard</div>
                         <div class="playground-card-desc">Real-time analytics UI with D3.js and React</div>
                     </div>
-                </div>
-                <div class="playground-card">
+                </a>
+                <a href="#" class="playground-card">
                     <img src="https://www.concertarchives.org/image_uploads/photo/image/1676419/large_image.jpg" alt="Task Management System project" loading="lazy">
                     <div class="playground-card-content">
                         <div class="playground-card-title">Task Management System</div>
                         <div class="playground-card-desc">Full-stack todo app with real-time updates</div>
                     </div>
-                </div>
-                <div class="playground-card">
+                </a>
+                <a href="#" class="playground-card">
                     <img src="https://www.concertarchives.org/image_uploads/photo/image/1676418/large_image.jpg" alt="API Testing Toolkit project" loading="lazy">
                     <div class="playground-card-content">
                         <div class="playground-card-title">API Testing Toolkit</div>
                         <div class="playground-card-desc">REST API testing and documentation tool</div>
                     </div>
-                </div>
-                <div class="playground-card">
+                </a>
+                <a href="#" class="playground-card">
                     <img src="https://www.concertarchives.org/image_uploads/photo/image/1676417/large_image.jpg" alt="SaaS Landing Page project" loading="lazy">
                     <div class="playground-card-content">
                         <div class="playground-card-title">SaaS Landing Page</div>
                         <div class="playground-card-desc">Modern startup landing page built in React</div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
         <div class="playground-cta">
@@ -1114,8 +1125,8 @@
         </div>
     </section>
 
-    <section class="contact-section" id="contact">
-            <span class="contact-label" data-scramble>Contact</span>
+    <section class="contact-section" id="contact" aria-labelledby="contact-label">
+            <span class="contact-label" id="contact-label" data-scramble>Contact</span>
         <div class="contact-grid">
             <div class="contact-info">
                 <a href="mailto:sebayepa219@gmail.com" class="contact-email">sebayepa219@gmail.com</a>
@@ -1124,7 +1135,7 @@
             <div class="contact-socials">
                 <a href="https://github.com/sebast219" target="_blank">Github</a>
                 <a href="https://linkedin.com/in/sebastian-yepes-dev" target="_blank">LinkedIn</a>
-                <a href="#" target="_blank">WhatsApp</a>
+                <a href="https://wa.me/573005865312" target="_blank">WhatsApp</a>
             </div>
         </div>
         <div class="contact-divider"></div>
@@ -1133,6 +1144,7 @@
             <span>&copy; 2026 Sebastián Yepes</span>
         </div>
     </section>
+    </main>
 
     <script>
         const cursor = document.getElementById('cursor');
@@ -1269,14 +1281,14 @@
 
         function startAutoScroll() {
             if (autoScrollId || !carousel) return;
-            const totalDistance = (track.scrollWidth - carousel.clientWidth) / 2;
-            const speed = totalDistance / 50000;
+            const halfTrack = track.scrollWidth / 2;
+            const speed = halfTrack / 50000;
             let lastTime = performance.now();
             function step(now) {
                 const delta = now - lastTime;
                 lastTime = now;
                 carousel.scrollLeft += speed * delta;
-                if (carousel.scrollLeft >= track.scrollWidth / 2) {
+                if (carousel.scrollLeft >= halfTrack) {
                     carousel.scrollLeft = 0;
                 }
                 if (!isDragging) {
@@ -1294,9 +1306,6 @@
         }
 
         if (carousel && track) {
-            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            if (!prefersReducedMotion) { startAutoScroll(); }
-
             carousel.addEventListener('mousedown', (e) => {
                 isDragging = true;
                 startX = e.pageX - carousel.offsetLeft;
@@ -1349,9 +1358,10 @@
                 track.classList.remove('dragging');
                 startAutoScroll();
             });
-
-            startAutoScroll();
         }
+
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!prefersReducedMotion) { startAutoScroll(); }
 
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && navLinks.classList.contains('open')) {
@@ -1514,13 +1524,13 @@
         /* periodic random glitch on small texts */
         function randomGlitch() {
             const targets = [
-                ...document.querySelectorAll('.hero-bottom span, .contact-phone, .contact-bottom, .stat-label, .section-subtitle, .tag, .project-desc, .about-text, .service-desc, .project-title, .service-name, .work-meta, .footer-bottom span, .playground-card-title, .playground-card-desc, .lab-item h3, .lab-item p')
+                ...document.querySelectorAll('.hero-bottom span, .contact-phone, .contact-bottom, .stat-label, .section-subtitle, .tag, .project-desc, .about-text, .service-desc, .project-title, .service-name, .playground-card-title, .playground-card-desc')
             ].filter(el => {
                 const t = el.textContent.trim();
                 return t.length > 0 && t.length < 80 && !el.querySelector('.dud');
             });
 
-            if (targets.length === 0) { setTimeout(randomGlitch, 500); return; }
+            if (targets.length === 0) { setTimeout(randomGlitch, 1500); return; }
 
             const el = targets[Math.floor(Math.random() * targets.length)];
             const orig = el.textContent.trim();

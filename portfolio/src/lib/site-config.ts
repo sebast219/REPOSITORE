@@ -1,0 +1,26 @@
+export const siteConfig = {
+  name: 'Sebastián Yepes',
+  title: 'Sebastián Yepes — Full Stack Developer',
+  description: 'Full Stack Developer based in Medellín. React, Next.js, Node.js, and modern web solutions.',
+  url: 'https://sebastianyepes.com',
+  email: 'sebayepa219@gmail.com',
+  phone: '+57 300 5865312',
+  location: 'Medellín, Colombia',
+  social: {
+    github: 'https://github.com/sebast219',
+    linkedin: 'https://linkedin.com/in/sebastian-yepes-dev',
+    whatsapp: 'https://wa.me/573005865312',
+  },
+  twitter: '@sebast219',
+  keywords: [
+    'Sebastián Yepes',
+    'full stack developer',
+    'Medellín',
+    'React',
+    'Next.js',
+    'Node.js',
+    'portfolio',
+    'web development',
+    'Colombia',
+  ],
+}
