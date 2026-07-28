@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import AnimatedGradient from '@/components/shared/animated-gradient'
 import Reveal from '@/components/shared/reveal'
 import ScrambleText from '@/components/shared/scramble-text'
@@ -38,7 +39,8 @@ export default function About() {
         aria-hidden="true"
       />
       <AnimatedGradient />
-      <div className="about-content relative z-[3]">
+      <div className="about-grid grid grid-cols-[1fr_auto] gap-12 items-start relative z-[3]">
+        <div className="about-content">
         <Reveal>
           <span
             className="section-label block text-[0.7rem] font-semibold tracking-[0.25em] uppercase mb-2"
@@ -84,6 +86,18 @@ export default function About() {
             ))}
           </div>
         </Reveal>
+      </div>
+      <Reveal delay={150} className="about-image flex-shrink-0">
+        <div className="w-[320px] h-[420px] rounded-[var(--radius-lg)] overflow-hidden relative">
+          <Image
+            src="https://www.concertarchives.org/image_uploads/photo/image/1676308/large_image.jpg"
+            alt="EsDeeKid concert photo"
+            fill
+            sizes="320px"
+            className="object-cover"
+          />
+        </div>
+      </Reveal>
       </div>
     </section>
   )

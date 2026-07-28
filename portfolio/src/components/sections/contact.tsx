@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Reveal from '@/components/shared/reveal'
 import { useLanguage } from '@/components/shared/language-provider'
 import { siteConfig } from '@/lib/site-config'
@@ -24,6 +25,17 @@ export default function Contact() {
       </Reveal>
 
       <div className="grid grid-cols-[1fr_1fr] gap-20 mt-16 max-lg:grid-cols-1 max-lg:gap-12">
+        <Reveal delay={50} className="relative">
+          <div className="w-full h-[200px] rounded-[var(--radius-lg)] overflow-hidden mb-8 relative">
+            <Image
+              src="https://www.concertarchives.org/image_uploads/photo/image/1676395/large_image.jpg"
+              alt="EsDeeKid"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover opacity-60"
+            />
+          </div>
+        </Reveal>
         <Reveal delay={100} className="flex flex-col justify-between">
           <div className="flex flex-col gap-[7px]">
             <a

@@ -8,19 +8,19 @@ import { useLanguage } from '@/components/shared/language-provider'
 const PROJECTS = [
   {
     key: 1,
-    image: '/images/project-1.svg',
+    image: 'https://www.concertarchives.org/image_uploads/photo/image/1682087/large_image.jpg',
     tags: ['REACT™', 'NEXT//', 'TAILWIND//', 'STRIPE//'],
     featured: false,
   },
   {
     key: 2,
-    image: '/images/project-2.svg',
+    image: 'https://www.concertarchives.org/image_uploads/photo/image/1676419/large_image.jpg',
     tags: ['NODE_01', 'NEST//', 'API_WHATSAPP', 'BOT//CORE'],
     featured: false,
   },
   {
     key: 3,
-    image: '/images/project-3.svg',
+    image: 'https://www.concertarchives.org/image_uploads/photo/image/1676418/large_image.jpg',
     tags: ['REACT™', 'TAILWIND//', 'CMS/X', 'UI_LEGAL'],
     featured: true,
   },

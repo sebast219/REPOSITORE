@@ -12,7 +12,11 @@ export default function Hero() {
       id="home"
       aria-label="Introduction"
     >
-      <div className="absolute inset-0 z-0 overflow-hidden">
+      <div className="absolute inset-0 z-0 overflow-hidden bg-black">
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-40"
+          style={{ backgroundImage: "url('https://www.concertarchives.org/image_uploads/photo/image/1695884/large_image.jpg')" }}
+        />
         <div className="absolute top-1/2 left-1/2 w-[177.77777778vh] h-[56.25vw] min-w-full min-h-full -translate-x-1/2 -translate-y-1/2">
           <iframe
             src="https://www.youtube.com/embed/zrce_mK58lA?autoplay=1&mute=2&loop=1&playlist=zrce_mK58lA&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&disablekb=1"

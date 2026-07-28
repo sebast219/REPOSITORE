@@ -100,7 +100,7 @@ export default function Playground() {
                 className="playground-card flex-[0_0_560px] rounded-[var(--radius-lg)] overflow-hidden bg-[var(--color-border)] aspect-[3/2] relative"
               >
                 <Image
-                  src={`/images/playground-${cardKey}.svg`}
+                  src={`https://www.concertarchives.org/image_uploads/photo/image/${1676417 - (cardKey - 1)}/large_image.jpg`}
                   alt={`${t(`playground.card${cardKey}.title`)} project`}
                   fill
                   sizes="(max-width: 768px) 100vw, 560px"

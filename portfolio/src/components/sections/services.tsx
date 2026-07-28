@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Reveal from '@/components/shared/reveal'
 import ScrambleText from '@/components/shared/scramble-text'
 import { useLanguage } from '@/components/shared/language-provider'
@@ -71,6 +72,15 @@ export default function Services() {
           {[1, 2, 3].map((i) => (
             <Reveal key={i} delay={(i - 1) * 100}>
             <div className="service-block py-16 border-b border-[var(--color-border)] first:pt-0 last:border-none">
+              <div className="service-image w-full h-[240px] rounded-[var(--radius-lg)] overflow-hidden mb-6 relative">
+                <Image
+                  src={`https://www.concertarchives.org/image_uploads/photo/image/${1676399 - (i - 1) * 2}/large_image.jpg`}
+                  alt={`Service ${i}`}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover"
+                />
+              </div>
               <div className="service-header flex items-start justify-between mb-6">
                 <h3 className="service-name font-display text-[clamp(2rem,4vw,3.5rem)] tracking-[0.04em] leading-[1.05]">
                   {t(`service${i}.name`)}

@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: siteConfig.name,
     locale: 'en_US',
-    images: [{ url: '/og-image.svg', width: 1200, height: 630 }],
+    images: [{ url: 'https://images.complex.com/complex/image/upload/c_crop,h_1345,w_1788,x_0,y_0/g_xy_center,x_894,y_673,ar_1.91,c_fill,q_auto,w_1200/sanity-new%2FScreenshot_2025-12-19_at_6.00.35_PM_lde430', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
